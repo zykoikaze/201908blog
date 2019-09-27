@@ -1,3 +1,48 @@
 <%- include ./include/header.html%>
-  首页
+
+<div>
+  <% articles.forEach(function(article){ %>
+  <div class="media">
+    <div class="media-left">
+      <a href="/">
+        <img class="media-object big-avator" src="<%= article.user.avator%>" alt="..." />
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <a href="/article/detail/<%=article._id%>">
+          <%= article.title %>
+        </a>
+      </h4>
+      <span>作者：<%= article.user.username %></span> |
+      <span>创作时间：<%= article.createAt.toLocaleString() %></span>
+    </div>
+  </div>
+  <hr />
+  <% }) %>
+</div>
+<nav aria-label="Page navigation">
+  <ul class="pagination  pagination-lg">
+    <%if(pageNum>1){%>
+    <li>
+      <a href="/?pageNum=<%=pageNum-1%>" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <%}%>
+    <%for(let i=1;i<=totalSize;i++){%>
+    <li class="<%= pageNum==i ? 'active':''%>">
+      <a href="/?pageNum=<%=i%>"><%=i%></a>
+    </li>
+    <%}%>   
+   
+    <%if(pageNum<totalSize){%>
+    <li>
+      <a href="/?pageNum=<%=pageNum+1%>" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    <%}%>
+  </ul>
+</nav>
 <%- include ./include/footer.html%>

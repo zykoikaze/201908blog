@@ -1,3 +1,41 @@
 <%- include ../include/header.html%>
-  发表文章
+<div id="markdown">
+  <form method="POST">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <input type="text" 
+          id="md-title" 
+          class="form-control" 
+          name="title"
+          placeholder="输入文章标题..." 
+          value="<%= article.title%>" />
+      </div>
+      <div class=" panel-body">
+        <textarea 
+          class="form-control" 
+          id="md-content" 
+          name="content"
+          rows="15"><%= article.content%></textarea>
+      </div>
+      <div class="panel-footer">
+        <button type="submit" id="md-button" class="btn btn-primary">提 交</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- <script>
+  let button = document.querySelector('#md-button')
+  button.onclick = function () {
+    let title = document.querySelector('#md-title').value
+    let content = document.querySelector('#md-content').value
+    let formDate = { title, content }
+    fetch(`/article/add`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": " application/json"
+      },
+      body: JSON.stringify(formDate)
+    })
+  }
+</script> -->
 <%- include ../include/footer.html%>

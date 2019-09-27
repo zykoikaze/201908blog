@@ -2,13 +2,13 @@ let express = require('express')
 const multer = require('multer') //上传图片
 
 let { User } = require('../model/index.js')
-let { checkNotLogin, checkLogin } = require('../utils.js')
+let { checkNotLogin, checkLogin } = require('./middleware/index.js')
 
 /** 图片上传路径 */
 const upload = multer({ dest: 'public/upload/' })
 
 let router = express.Router()
-router.get('/signup', function (req, res) {
+router.get('/signup',checkNotLogin, function (req, res) {
   res.render('user/signup', {
     title: '用户注册'
   })
@@ -30,7 +30,7 @@ router.get('/signin', checkNotLogin, function (req, res) {
     title: '用户登录'
   })
 })
-router.post('/signin', function (req, res) {
+router.post('/signin',checkNotLogin, function (req, res) {
   let user = req.body
   User.findOne(user, function (err, doc) {
     if (err) {

@@ -6,11 +6,14 @@ const articleRouter = require('./routes/article')
 const path = require('path')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+//持久化session，将session保存在数据库中，重启服务器数据不会丢失
+const MongoStore = require('connect-mongo')(session)
 const flash = require('connect-flash')
 //配置静态资源路径
 app.use(express.static(path.resolve('public')))
 
 //解析form表单请求体，并转成对象赋给req.body
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 //配置模板引擎
@@ -22,10 +25,13 @@ app.engine('html', require('ejs').__express)
 app.use(session({
   secret: 'blog', //用来加密cookie
   resave: true, //每次客户端请求服务器都会保存session
-  saveUninitialized: true, //保存未初始化的session
+  saveUninitialized: true, //保存未初始化的session  
   cookie: {
-    maxAge: 3600 * 1000
-  }
+    maxAge: 3600 * 1000 * 24
+  },
+  store: new MongoStore({
+    url: require('./config').dbUrl
+  })
 }))
 
 /** flash一闪而过，保存成功/失败的提示消息，依赖session，必须放到session下面 */
@@ -42,6 +48,7 @@ app.use(function (req, res, next) {
    */
   res.locals.success = req.flash('success').toString() || '';
   res.locals.error = req.flash('error').toString() || '';
+  res.locals.keyword = ''
 
   next()
 })

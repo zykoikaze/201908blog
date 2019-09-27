@@ -1,0 +1,31 @@
+<%- include ../include/header.html%>
+<div class="article-content">
+  <div class="media">
+    <div class="media-left">
+      <a href="#">
+        <img class="media-object big-avator" src="<%= article.user.avator%>" alt="..." />
+      </a>
+    </div>
+    <div class="media-body">
+      <h4><a href="/"><%= article.user.username%></a></h4>
+      <span><%= article.createAt.toLocaleString() %></span>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">      
+      <h1 class="panel-title">
+        <%= article.title%>
+      </h1>
+    </div>
+    <div class="panel-body">
+      <%- article.template%>
+    </div>
+    <% if(user && user._id == article.user._id){%>
+    <div class="panel-footer">
+      <a class='btn btn-warning' href="/article/update/<%=article._id%>">编辑</a>
+      <a class='btn btn-danger' href="/article/delete/<%=article._id%>">删除</a>
+    </div>
+    <%}%>
+  </div>
+</div>
+<%- include ../include/footer.html%>
